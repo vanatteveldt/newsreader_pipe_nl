@@ -1,3 +1,19 @@
+# Dutch newsreader pipeline installation script
+
+This is a convenience wrapper around the [Dutch newsreader pipeline](http://newsreader-project.eu). 
+It installs the needed packages from github and compiles them as needed, 
+and provides convenient shell scripts for running (part of) the pipeline.
+
+Currently, this will install the following modules and tools:
+
+Newsreader modules:
+- https://github.com/ixa-ehu/ixa-pipe-tok 
+- https://github.com/cltl/morphosyntactic_parser_nl
+
+Tools:
+- [Alpino](http://www.let.rug.nl/vannoord/alp/Alpino/) (Dutch syntax parser)
+- [KafNafParserPy](https://github.com/cltl/KafNafParserPy), a python script for parsing KAF/NAF formatted output
+
 # Installation
 
 ## Prerequisites
