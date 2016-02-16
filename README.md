@@ -1,30 +1,40 @@
-Installation
+# Installation
 
-Install prerequisites (code given for ubuntu):
+## Prerequisites
+
+First, you need to install some system-wide libraries. On ubuntu, the following `apt` command should do the trick:
 
 ```{sh}
-apt-get install libboost-filesystem-dev libtk8.5 maven git
+sudo apt-get install libboost-filesystem-dev libtk8.5 maven git
 ```
 
-Clone this repository
+(Note that you need java as well, I would generally recommend installing sun java:
+
+```{sh}
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer 
+```
+
+## Installing the Dutch newsreader pipeline
+
+Clone this repository and run the install script:
 
 ```{sh}
 git clone http://github.com/vanatteveldt/newsreader_pipe_nl
-```
-
-Run the install script
-
-```{sh}
 bash newsreader_pipe_nl/install.sh
 ```
 
-Test the parser
+Now, test the parser. It should produce XML output if it works
 
 ```{sh}
 echo "Dit is een test" | newsreader_pipe_nl/run_parser.sh
 ```
 
+## Alpino and libboost
+
 Note: on recent ubuntu versions Alpino needs an older version of the libboost system and filesystem packages.
+The following commands get the needed libraries and install them using dpkg, but this will conflict with existing libboost libraries. Hopefully, this will be resolved in a (near-)future new release of Alpino.
 
 ```{sh}
 wget http://nl.archive.ubuntu.com/ubuntu/pool/main/b/boost1.54/libboost1.54-dev_1.54.0-4ubuntu3_amd64.deb
