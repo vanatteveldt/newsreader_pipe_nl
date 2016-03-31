@@ -47,7 +47,7 @@ mvn clean package
 mkdir -p $DIR/tools
 if [ ! -d "$DIR/tools/Alpino" ]; then
   echo -e "\n${em}*** Installing Alpino ***${reset}"
-  curl http://www.let.rug.nl/vannoord/alp/Alpino/versions/binary/Alpino-x86_64-Linux-glibc-2.19-20847-sicstus.tar.gz | tar xz -C $DIR/tools
+  curl http://www.let.rug.nl/vannoord/alp/Alpino/versions/binary/Alpino-x86_64-Linux-glibc-2.19-20908-sicstus.tar.gz | tar xz -C $DIR/tools
 fi
 
 if [ ! -d "$DIR/newsreader-env" ]; then
