@@ -28,6 +28,19 @@ function install_wsd {
     fi
 }
 
+function install_ixa_pipe_time {
+    install_git ixa-ehu/ixa-pipe-time
+    if [ $WAS_INSTALLED = 1 ]; then
+	wget -P lib https://raw.githubusercontent.com/HeidelTime/heideltime/master/conf/config.props
+	wget -P lib http://ixa2.si.ehu.es/~jibalari/jvntextpro-2.0.jar
+	wget https://raw.githubusercontent.com/carchrae/install-to-project-repo/master/install-to-project-repo.py -O /tmp/install.py
+	python /tmp/install.py
+	mvn clean install
+    fi
+}
+
+
+
 #####################
 #        MAIN       #
 #####################
@@ -55,6 +68,7 @@ install_mvn ixa-ehu/ixa-pipe-nerc
 install_ned
 install_git rubenIzquierdo/dbpedia_ner
 install_wsd
+install_ixa_pipe_time
 
 # External downloads:
 # NERC models (nl only; can download original from http://ixa2.si.ehu.es/ixa-pipes/models/nerc-models-1.5.4.tgz)
