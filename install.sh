@@ -69,9 +69,12 @@ install_ned
 install_git rubenIzquierdo/dbpedia_ner
 install_wsd
 install_ixa_pipe_time
+install_git cltl/vua-resources
+install_mvn cltl/OntoTagger
 
 # External downloads:
-# NERC models (nl only; can download original from http://ixa2.si.ehu.es/ixa-pipes/models/nerc-models-1.5.4.tgz)
+# NERC models
+# (this is nl only; can download original from http://ixa2.si.ehu.es/ixa-pipes/models/nerc-models-1.5.4.tgz)
 install_tgz $TDIR/nerc-models-1.5.4 http://i.amcat.nl/nerc-models-1.5.4-nl.tgz
 # Alpino
 install_tgz $TDIR/Alpino http://www.let.rug.nl/vannoord/alp/Alpino/versions/binary/Alpino-x86_64-Linux-glibc-2.19-20908-sicstus.tar.gz 
