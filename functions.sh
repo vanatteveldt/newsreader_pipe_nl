@@ -23,7 +23,8 @@ function install_git {
 	WAS_INSTALLED=0
     else
 	msg "cloning $REPO into $SUBDIR"
-	git clone $REPO $SUBDIR
+	echo git clone $REPO $SUBDIR "${@:2}"
+	git clone $REPO $SUBDIR "${@:2}"
 	cd $SUBDIR
 	WAS_INSTALLED=1
     fi
