@@ -74,15 +74,19 @@ function install_opinion_miner {
 set -e 
 . functions.sh
 
-DIR=`dirname "$(readlink -f "$0")"`
-MDIR=$DIR/modules
-TDIR=$DIR/tools
+export NEWSREADER_HOME=`dirname "$(readlink -f "$0")"`
+MDIR=$NEWSREADER_HOME/modules
+TDIR=$NEWSREADER_HOME/tools
+
+msg "Installing newsreader into $NEWSREADER_HOME"
+
 mkdir -p $TDIR
 
 msg "Checking prerequisites"
-for REQ in java mvn git; do
+for REQ in java mvn git timbl; do
     if ! type -p $REQ; then
 	msg "${red}$REQ not installed!${reset}" $red
+	echo "You can try 'sudo apt-get install $REQ'"
 	exit 1
     fi
 done
@@ -108,13 +112,18 @@ install_tgz $TDIR/nerc-models-1.5.4 http://i.amcat.nl/nerc-models-1.5.4-nl.tgz
 # Alpino
 install_tgz $TDIR/Alpino http://www.let.rug.nl/vannoord/alp/Alpino/versions/binary/Alpino-x86_64-Linux-glibc-2.19-20908-sicstus.tar.gz 
 
-
+VENV="$NEWSREADER_HOME/newsreader-env"
+if [ ! -d "$VENV" ]; then
+  msg "Setting up python virtual environment in $VENV"
+  virtualenv "$VENV"
+  "$VENV/bin/pip" install KafNafParserPy
+fi
 
 msg "Newsreader Dutch pipeline install complete" $green
 
 echo "You can set your newsreader home to"
 echo 
-echo "${bold}export NEWSREADER_HOME=$DIR${reset}"
+echo "${bold}export NEWSREADER_HOME=$NEWSREADER_HOME${reset}"
 echo 
 echo "Make sure that spotlight is running, i.e. call:"
 echo "(cd \$NEWSREADER_HOME/tools/spotlight;  java -jar dbpedia-spotlight-0.7.jar nl http://localhost:2060/rest)"

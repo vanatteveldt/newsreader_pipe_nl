@@ -18,7 +18,7 @@ function msg {
 WAS_INSTALLED=0
 function install_git {
     REPO=https://github.com/$1
-    SUBDIR="$DIR/modules/`basename $REPO`"
+    SUBDIR="$MDIR/`basename $REPO`"
     if [ -d "$SUBDIR" ]; then 
 	WAS_INSTALLED=0
     else
