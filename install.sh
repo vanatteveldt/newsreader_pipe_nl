@@ -39,32 +39,28 @@ function install_ixa_pipe_time {
     fi
 }
 
-function install_sh {
-    install_git "$1"
-    if [ $WAS_INSTALLED = 1 ]; then
-	bash install.sh
-    fi
-}
-
-function install_svm_light {
-  DIR=$TDIR/svm_light
-  if [ ! -d $DIR ]; then
-      mkdir -p $DIR
-      curl -L http://download.joachims.org/svm_light/current/svm_light_linux64.tar.gz | tar xz -C $DIR
-  fi
-}
-
-function install_crfsuite {
-    if [ ! -d "$TDIR/crfsuite-0.12" ]; then
-	curl -L https://github.com/downloads/chokkan/crfsuite/crfsuite-0.12-x86_64.tar.gz | tar xz -C $TDIR
-    fi
-}
 
 function install_opinion_miner {
-  install_svm_light 
-  install_crfsuite 
-  install_git cltl/opinion_miner_deluxe
-  #TODO: create config file and test
+    SVMDIR=$TDIR/svm_light
+    if [ ! -d $SVMDIR ]; then
+	msg "Installing svm_light to $SVMDIR"
+	mkdir -p $SVMDIR
+	curl -L http://download.joachims.org/svm_light/current/svm_light_linux64.tar.gz | tar xz -C $SVMDIR
+    fi
+    CRFDIR="$TDIR/crfsuite-0.12"
+    if [ ! -d "$CRFDIR" ]; then
+	msg "Installing crfsuite to $CRFDIR"
+	curl -L https://github.com/downloads/chokkan/crfsuite/crfsuite-0.12-x86_64.tar.gz | tar xz -C $TDIR
+    fi
+    install_git cltl/opinion_miner_deluxe
+    if [ $WAS_INSTALLED = 1 ]; then
+	CFG=$MDIR/opinion_miner_deluxe/config.cfg
+	msg "Writing opinion miner config file to $CFG"
+	printf "[general]\noutput_folder=feat\n\n" > $CFG
+	printf "[crfsuite]\npath_to_binary=%s\n\n" "$CRFDIR/bin/crfsuite"  >> $CFG
+	printf "[svmlight]\npath_to_binary_learn = %s\npath_to_binary_classify = %s\n" \
+	       "$SVMDIR/svm_learn" "$SVMDIR/svm_classify" >> $CFG
+    fi
 }
 
 #####################
@@ -72,11 +68,10 @@ function install_opinion_miner {
 #####################
 
 set -e 
-. functions.sh
-
 export NEWSREADER_HOME=`dirname "$(readlink -f "$0")"`
 MDIR=$NEWSREADER_HOME/modules
 TDIR=$NEWSREADER_HOME/tools
+. $NEWSREADER_HOME/functions.sh
 
 msg "Installing newsreader into $NEWSREADER_HOME"
 
@@ -102,8 +97,8 @@ install_ixa_pipe_time
 install_sh cltl/OntoTagger
 install_git vanatteveldt/vua-srl-nl -b patch-1
 install_git newsreader/vua-srl-dutch-nominal-events
-# install_sh cltl/EventCoreference # see https://github.com/cltl/EventCoreference/issues/1
-install_opinion_miner
+# install fails: install_sh cltl/EventCoreference # see https://github.com/cltl/EventCoreference/issues/1
+install_opinion_miner # installs but does not work yet
 
 # External downloads:
 # NERC models
@@ -117,6 +112,7 @@ if [ ! -d "$VENV" ]; then
   msg "Setting up python virtual environment in $VENV"
   virtualenv "$VENV"
   "$VENV/bin/pip" install KafNafParserPy
+  "$VENV/bin/pip" install git+https://github.com/vanatteveldt/VUA_pylib 
 fi
 
 msg "Newsreader Dutch pipeline install complete" $green

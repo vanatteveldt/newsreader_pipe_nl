@@ -46,3 +46,10 @@ function install_tgz {
 	curl $url | tar xz -C $TDIR
     fi
 }
+
+function install_sh {
+    install_git "$1"
+    if [ $WAS_INSTALLED = 1 ]; then
+	bash install.sh
+    fi
+}
