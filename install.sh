@@ -88,7 +88,7 @@ done
 
 # Newsreader pipeline modules:
 install_mvn ixa-ehu/ixa-pipe-tok
-install_git cltl/morphosyntactic_parser_nl
+install_git vanatteveldt/morphosyntactic_parser_nl
 install_mvn ixa-ehu/ixa-pipe-nerc
 install_ixa_pipe_ned
 install_git rubenIzquierdo/dbpedia_ner
