@@ -96,7 +96,7 @@ install_git vanatteveldt/vua-srl-nl -b patch-1
 install_git newsreader/vua-srl-dutch-nominal-events
 install_sh cltl/EventCoreference 
 install_opinion_miner 
-install_git cltl/multilingual_factuality
+install_git vanatteveldt/multilingual_factuality
 
 # External downloads:
 # NERC models
