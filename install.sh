@@ -41,25 +41,25 @@ function install_ixa_pipe_time {
 
 
 function install_opinion_miner {
-    SVMDIR=$TDIR/svm_light
-    if [ ! -d $SVMDIR ]; then
-	msg "Installing svm_light to $SVMDIR"
-	mkdir -p $SVMDIR
-	curl -L http://download.joachims.org/svm_light/current/svm_light_linux64.tar.gz | tar xz -C $SVMDIR
+    # don't use install_me.sh to avoid password prompt 
+    install_git rubenIzquierdo/opinion_miner_deluxePP
+    CRFDIR=$TDIR/CRF++-0.58
+    if [ ! -d $CRFDIR ]; then
+	msg "Installing CRF++ into $CRFDIR"
+	tar -xzf $MDIR/opinion_miner_deluxePP/crf_lib/CRF++-0.58.tar.gz -C $TDIR
+	cd $CRFDIR
+	./configure
+	make
+	echo "PATH_TO_CRF_TEST='$CRFDIR/crf_test'" > $MDIR/opinion_miner_deluxePP/path_crf.py
     fi
-    CRFDIR="$TDIR/crfsuite-0.12"
-    if [ ! -d "$CRFDIR" ]; then
-	msg "Installing crfsuite to $CRFDIR"
-	curl -L https://github.com/downloads/chokkan/crfsuite/crfsuite-0.12-x86_64.tar.gz | tar xz -C $TDIR
-    fi
-    install_git cltl/opinion_miner_deluxe
-    if [ $WAS_INSTALLED = 1 ]; then
-	CFG=$MDIR/opinion_miner_deluxe/config.cfg
-	msg "Writing opinion miner config file to $CFG"
-	printf "[general]\noutput_folder=feat\n\n" > $CFG
-	printf "[crfsuite]\npath_to_binary=%s\n\n" "$CRFDIR/bin/crfsuite"  >> $CFG
-	printf "[svmlight]\npath_to_binary_learn = %s\npath_to_binary_classify = %s\n" \
-	       "$SVMDIR/svm_learn" "$SVMDIR/svm_classify" >> $CFG
+    MODELDIR=$TDIR/opinion_miner_models
+    if [ ! -d $MODELDIR ]; then
+	if [ -z ${CLTL_PASSWORD+x} ]; then
+	    msg "${red}\$CLTL_PASSWORD not set!${reset}" $red
+	    exit 1
+	fi
+	mkdir -p $MODELDIR
+	curl --user "cltl:$CLTL_PASSWORD" kyoto.let.vu.nl/~izquierdo/models_opinion_miner_deluxePP.tgz | tar -xz -C $MODELDIR
     fi
 }
 
@@ -74,13 +74,10 @@ TDIR=$NEWSREADER_HOME/tools
 . $NEWSREADER_HOME/functions.sh
 
 msg "Installing newsreader into $NEWSREADER_HOME"
-
 mkdir -p $TDIR
-
-msg "Checking prerequisites"
 for REQ in java mvn git timbl; do
-    if ! type -p $REQ; then
-	msg "${red}$REQ not installed!${reset}" $red
+    if ! type -p $REQ > /dev/null ; then
+	msg "${red}Error: $REQ not installed!${reset}" $red
 	echo "You can try 'sudo apt-get install $REQ'"
 	exit 1
     fi
@@ -97,8 +94,9 @@ install_ixa_pipe_time
 install_sh cltl/OntoTagger
 install_git vanatteveldt/vua-srl-nl -b patch-1
 install_git newsreader/vua-srl-dutch-nominal-events
-# install fails: install_sh cltl/EventCoreference # see https://github.com/cltl/EventCoreference/issues/1
-install_opinion_miner # installs but does not work yet
+install_sh cltl/EventCoreference 
+install_opinion_miner 
+install_git cltl/multilingual_factuality
 
 # External downloads:
 # NERC models
@@ -112,7 +110,6 @@ if [ ! -d "$VENV" ]; then
   msg "Setting up python virtual environment in $VENV"
   virtualenv "$VENV"
   "$VENV/bin/pip" install KafNafParserPy
-  "$VENV/bin/pip" install git+https://github.com/vanatteveldt/VUA_pylib 
 fi
 
 msg "Newsreader Dutch pipeline install complete" $green
