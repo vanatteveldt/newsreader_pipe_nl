@@ -30,7 +30,7 @@ function annotate {
   bash $MDIR/OntoTagger/scripts/nominal-events.sh |\
   python $MDIR/vua-srl-dutch-nominal-events/vua-srl-dutch-additional-roles.py |\
   bash $MDIR/EventCoreference/scripts/event-coreference-nl.sh |\
-  python $MDIR/opinion_miner_deluxePP/tag_file.py -f $TDIR/opinion_miner_models/models/models_news_nl/ |\
+  python $MDIR/opinion_miner_deluxePP/tag_file.py -f $TDIR/opinion_miner_models/models/models_news_nl/ -polarity |\
   python $MDIR/multilingual_factuality/feature_extractor/rule_based_factuality.py |\
   cat
 }

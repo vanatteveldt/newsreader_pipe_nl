@@ -43,14 +43,22 @@ function install_ixa_pipe_time {
 function install_opinion_miner {
     # don't use install_me.sh to avoid password prompt 
     install_git rubenIzquierdo/opinion_miner_deluxePP
+    OMDIR=$MDIR/opinion_miner_deluxePP
     CRFDIR=$TDIR/CRF++-0.58
     if [ ! -d $CRFDIR ]; then
 	msg "Installing CRF++ into $CRFDIR"
-	tar -xzf $MDIR/opinion_miner_deluxePP/crf_lib/CRF++-0.58.tar.gz -C $TDIR
+	tar -xzf $OMDIR/crf_lib/CRF++-0.58.tar.gz -C $TDIR
 	cd $CRFDIR
 	./configure
 	make
-	echo "PATH_TO_CRF_TEST='$CRFDIR/crf_test'" > $MDIR/opinion_miner_deluxePP/path_crf.py
+	echo "PATH_TO_CRF_TEST='$CRFDIR/crf_test'" > $OMDIR/path_crf.py
+    fi
+    SVMDIR=$OMDIR/svm_light
+    if [ ! -d $SVMDIR ]; then
+	mkdir $SVMDIR
+	
+	curl http://osmot.cs.cornell.edu/svm_light/current/svm_light.tar.gz | tar -xz -C $SVMDIR
+	(cd $SVMDIR; make)
     fi
     MODELDIR=$TDIR/opinion_miner_models
     if [ ! -d $MODELDIR ]; then
@@ -60,6 +68,10 @@ function install_opinion_miner {
 	fi
 	mkdir -p $MODELDIR
 	curl --user "cltl:$CLTL_PASSWORD" kyoto.let.vu.nl/~izquierdo/models_opinion_miner_deluxePP.tgz | tar -xz -C $MODELDIR
+    fi
+    POLMODIR=$OMDIR/polarity_models
+    if [ ! -d $POLMODIR ]; then
+	curl http://kyoto.let.vu.nl/~izquierdo/public/polarity_models.tgz | tar -xz -C $OMDIR
     fi
 }
 
