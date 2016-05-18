@@ -1,0 +1,11 @@
+# Configuration file to start spotlight using systemd
+# Make sure to change the path to newreader_pipe_nl
+
+[Unit]
+Description=Spotlight Server
+
+[Service]
+Environment=NEWSREADER_HOME=/data/wva/newsreader_pipe_nl
+WorkingDirectory=/data/wva/newsreader_pipe_nl/tools/spotlight
+ExecStart=/usr/bin/java -jar dbpedia-spotlight-0.7.jar nl http://localhost:2060/rest
+Type=simple
