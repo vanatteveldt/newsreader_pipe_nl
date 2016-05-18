@@ -105,6 +105,7 @@ install_svm_wsd
 install_ixa_pipe_time
 install_sh cltl/OntoTagger
 install_git vanatteveldt/vua-srl-nl -b patch-1
+install_mvn cltl/KafSaxParser
 install_git newsreader/vua-srl-dutch-nominal-events
 install_sh cltl/EventCoreference 
 install_opinion_miner 

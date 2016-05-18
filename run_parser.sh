@@ -26,6 +26,7 @@ function annotate {
   java -jar $MDIR/ixa-pipe-time/target/ixa.pipe.time.jar -m $MDIR/ixa-pipe-time/lib/alpino-to-treetagger.csv -c  $MDIR/ixa-pipe-time/lib/config.props |\
   bash $MDIR/OntoTagger/scripts/predicate-matrix-tagger.sh |\
   bash $MDIR/vua-srl-nl/run.sh |\
+  java -Xmx1812m -cp "$MDIR/KafSaxParser/target/KafSaxParser-v3.0-jar-with-dependencies.jar" eu.kyotoproject.util.FixDutchSrl |\
   bash $MDIR/OntoTagger/scripts/srl-framenet-tagger.sh |\
   bash $MDIR/OntoTagger/scripts/nominal-events.sh |\
   python $MDIR/vua-srl-dutch-nominal-events/vua-srl-dutch-additional-roles.py |\
