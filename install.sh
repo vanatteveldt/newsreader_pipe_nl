@@ -109,7 +109,7 @@ install_mvn cltl/KafSaxParser
 install_git newsreader/vua-srl-dutch-nominal-events
 install_sh cltl/EventCoreference 
 install_opinion_miner 
-install_git vanatteveldt/multilingual_factuality
+install_git cltl/multilingual_factuality
 
 # External downloads:
 # NERC models
