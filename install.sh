@@ -97,17 +97,17 @@ done
 
 # Newsreader pipeline modules:
 install_mvn ixa-ehu/ixa-pipe-tok
-install_git vanatteveldt/morphosyntactic_parser_nl
+install_git cltl/morphosyntactic_parser_nl
 install_mvn ixa-ehu/ixa-pipe-nerc
 install_ixa_pipe_ned
 install_git rubenIzquierdo/dbpedia_ner
 install_svm_wsd
 install_ixa_pipe_time
-install_sh cltl/OntoTagger
-install_git vanatteveldt/vua-srl-nl -b patch-1
+install_sh vanatteveldt/OntoTagger -b patch-3
+install_git newsreader/vua-srl-nl
 install_mvn cltl/KafSaxParser
 install_git newsreader/vua-srl-dutch-nominal-events
-install_sh cltl/EventCoreference 
+install_sh vanatteveldt/EventCoreference 
 install_opinion_miner 
 install_git cltl/multilingual_factuality
 
@@ -116,7 +116,7 @@ install_git cltl/multilingual_factuality
 # (this is nl only; can download original from http://ixa2.si.ehu.es/ixa-pipes/models/nerc-models-1.5.4.tgz)
 install_tgz $TDIR/nerc-models-1.5.4 http://i.amcat.nl/nerc-models-1.5.4-nl.tgz
 # Alpino
-install_tgz $TDIR/Alpino http://www.let.rug.nl/vannoord/alp/Alpino/versions/binary/Alpino-x86_64-Linux-glibc-2.19-20908-sicstus.tar.gz 
+install_tgz $TDIR/Alpino http://www.let.rug.nl/vannoord/alp/Alpino/versions/binary/latest.tar.gz
 
 VENV="$NEWSREADER_HOME/newsreader-env"
 if [ ! -d "$VENV" ]; then

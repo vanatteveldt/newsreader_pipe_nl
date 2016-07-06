@@ -48,7 +48,7 @@ function install_tgz {
 }
 
 function install_sh {
-    install_git "$1"
+    install_git "$@"
     if [ $WAS_INSTALLED = 1 ]; then
 	bash install.sh
     fi
