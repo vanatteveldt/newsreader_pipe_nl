@@ -15,6 +15,10 @@ function msg {
     echo -e "${COL}** ${reset}"
 }
 
+function pipemsg {
+    (>&2 echo -e "${em}** $1${reset}") && cat
+}
+
 WAS_INSTALLED=0
 function install_git {
     REPO=https://github.com/$1
